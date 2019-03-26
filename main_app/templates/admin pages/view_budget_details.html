@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+ <div class="row">
+    <div class="col-md-6">
+<table class="table table-sm table-light">
+    <h4>Cost Details</h4>
+  <thead>
+    <tr>
+
+      <th scope="col">Date</th>
+      <th scope="col">Purpose</th>
+      <th scope="col">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for cost in costs %}
+    <tr class="btn-info">
+      <td>{{ cost.date }}</td>
+      <td>{{ cost.purpose }}</td>
+      <td>{{ cost.cost }}</td>
+    </tr>
+   
+  {% endfor %}
+
+  </tbody>
+</table>
+<p class="text-right"><b class="">TOTAL:{{total}} Tk</b></p>
+
+
+    </div>
+    <div col-md-6>
+    	GRAPHS
+    	
+    </div>
+
+    </div>
+
+
+{%endblock%}

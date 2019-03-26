@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Smart budget</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="icon" type="image/png" href="{% static "assets/images/icons/favicon.ico" %}">
+	<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="{% static "assets/css/opensans-font.css" %} ">
+	<link rel="stylesheet" type="text/css" href="{% static "assets/fonts/line-awesome/css/line-awesome.min.css" %}">
+	<!-- Jquery -->
+	<link rel="stylesheet" href="{% static "assets/css/site-demos.css" %}">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="{% static "assets/css/style.css" %}">
+</head>
+<body class="form-v4">
+	<div class="page-content">
+		<div class="form-v4-content">
+			<div class="form-left">
+				<h2>Smart Budget</h2>
+				<p class="text-1">This is a free application to track your budget according to your costs</p>
+				<p class="text-2">Feel free to use this application. Please share it to your friends.</p>
+				
+			</div>
+			<form class="form-detail" action="#" method="post" id="myform">
+				<h2>Welcome</h2>
+			
+				<div class="form-row-last">
+					
+					<button class="btn btn-lg login"><a href="{% url "login" %}" class="">Login</a></button>
+				</div>
+				<div class="form-row-last">
+					<button class="btn btn-lg register"><a href=" {% url "signup" %}" class="">Register</a></button>
+				</div>
+			</form>
+			
+			
+		</div>
+	</div>
+	<script src="{% static "assets/js/jquery.min.js" %}"></script>
+	<script src="{% static "assets/js/jquery.validate.min.js" %}"></script>
+	<script src="{% static "assets/js/jquery-additional-methods.min.js.js" %}"></script>
+	<script src="{% static "assets/js/bootstrap.min.js" %}"></script>
+
+</body> <!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

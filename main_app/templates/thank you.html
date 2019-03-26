@@ -1,0 +1,21 @@
+<h1>Welcome</h1>
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
+{% else %}
+    <p>Welcome, new user. Please log in.</p>
+{% endif %}
+<a class="btn btn-primary" href="{% url 'logout' %}">Log Out</a>
+<hr>
+<a href="">Create new Budget</a><br><br>
+<u>List of budget</u><br>
+
+<table>
+  <tr>
+    <th>Budget Name</th>
+    <th >Action</th>
+  </tr>
+  <tr>
+    <td>Bill Gates</td>
+   
+  </tr>
+</table>

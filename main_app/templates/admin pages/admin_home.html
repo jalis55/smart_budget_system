@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+	.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    /*margin: 5% 0;*/
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+</style>
+<br>
+<div class="row">
+	<div class="col-md-4">
+	 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#add_budget">Add New Budget</button>
+	 {# <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="">Create Family Budget</button> #}
+</div>
+
+</div>
+<hr>
+    <div class="row col-md-6 col-md-offset-2 custyle">
+    	<h2>Current Budget List</h2>
+    <table class="table table-striped custab">
+    <thead>
+    	
+        <tr>
+            <th>Title</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    {% for budget in budgets %}
+            <tr class="info">
+                
+                <td>{{budget.budget_name}}</td>
+                <td class="text-center">
+                	<a href="{% url "view_budget_details" budget.budget_id %}" class='btn btn-info btn-xs'><span class="glyphicon glyphicon-eye-open"></span>View </a> 
+                	<a class='btn btn-info btn-xs' href="{% url "manage_budget" budget.budget_id %}"><span class="glyphicon glyphicon-edit"></span> Manage</a> <a href="{% url "delete_budget" budget.budget_id %}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete?')"><span class="glyphicon glyphicon-remove"></span> Del</a>
+                </td>
+            </tr>
+    {% endfor %}
+
+    </table>
+    </div>
+
+    {#    budget model#}
+<div id="add_budget" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enter New Budget Details</h4>
+
+      </div>
+      <div class="modal-body">
+        <form action="" method="post">
+        	{% csrf_token %}
+        	                    <div class="form-group">
+
+                                    <input required type="text" name="budget_name" class="form-control input-sm" id="budget_name" placeholder="Budget Name">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <input required type="text" name="total_budget" class="form-control input-sm" id="total_budget" placeholder="Target Budget">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-success btn-block">
+                                </div>
+
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{#    end budget model#}
+
+{% endblock %}
