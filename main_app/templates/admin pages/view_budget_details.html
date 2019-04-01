@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+
+
+
  <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 <table class="table table-sm table-light">
     <h4>Cost Details</h4>
   <thead>
@@ -19,7 +22,7 @@
       <td>{{ cost.purpose }}</td>
       <td>{{ cost.cost }}</td>
     </tr>
-   
+
   {% endfor %}
 
   </tbody>
@@ -28,12 +31,118 @@
 
 
     </div>
-    <div col-md-6>
-    	GRAPHS
-    	
+    <!-- Create a div where the graph will take place -->
+    <div class="col-md-8">
+        <br>
+        <h2>
+            {{ budget_name }}
+        </h2>
+        <div id="my_dataviz"></div>
+
     </div>
 
     </div>
+
+    <script>
+    var total_budget={{ total_budget }}
+    console.log(total_budget);
+   var file_name='/{{ file_name }}';
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 90, left: 40},
+    width = 460 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Parse the Data
+d3.csv(file_name, function(data) {
+
+// X axis
+var x = d3.scaleBand()
+  .range([ 0, width ])
+  .domain(data.map(function(d) { return d.purpose; }))
+  .padding(0.2);
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+// Add Y axis
+var y = d3.scaleLinear()
+  .domain([0, total_budget])
+  .range([ height, 0]);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+// create a tooltip
+  var Tooltip = d3.select("#my_dataviz")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "orange")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+  var mouseover = function(d) {
+    Tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+      .style("opacity", 1)
+  }
+  var mousemove = function(d) {
+    Tooltip
+      .html("cost: "+d.cost+"</br> date:"+d.date)
+      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("top", (d3.mouse(this)[1]) + "px")
+  }
+  var mouseleave = function(d) {
+    Tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+      .style("opacity", 0.8)
+  }
+
+// Bars
+svg.selectAll("mybar")
+  .data(data)
+  .enter()
+  .append("rect")
+    .attr("x", function(d) { return x(d.purpose); })
+    .attr("width", x.bandwidth())
+    .attr("fill", "#69b3a2")
+    // no bar at the beginning thus:
+    .attr("height", function(d) { return height - y(0); }) // always equal to 0
+    .attr("y", function(d) { return y(0); })
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave)
+
+// Animation
+svg.selectAll("rect")
+  .transition()
+  .duration(800)
+  .attr("y", function(d) { return y(d.cost); })
+  .attr("height", function(d) { return height - y(d.cost); })
+  .delay(function(d,i){console.log(i) ; return(i*100)})
+
+
+})
+
+    </script>
 
 
 {%endblock%}

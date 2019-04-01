@@ -9,8 +9,9 @@ from django.contrib.auth.decorators import login_required
 import re
 import datetime
 from time import gmtime, strftime
-
-
+import csv
+import json
+from django.core import serializers
 
 
 
@@ -104,14 +105,34 @@ def manage_budget(request,id):
     return render(request,'admin pages/manage_budget.html',context)
 @login_required
 def view_budget_details(request,id):
+
     costs=Costs.objects.filter(budget_id=id)
+    budget = Budgets.objects.get(budget_id=id)
+
+    file_name='static/csvFiles/details_budget_id='+str(id)+'.csv'
+
+    csv_file = open(file_name, 'w')
+
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(['cost', 'purpose', 'date'])
+
     total=0
+
     for c in costs:
+
+        csv_writer.writerow([c.cost,c.purpose,c.date])
         total=total+c.cost
+    costs=list(costs)
     context={
         "costs":costs,
         "total":total,
+        "file_name":file_name,
+        "budget_name":budget.budget_name,
+        "total_budget":budget.total_budget,
+
     }
+
+
     return render(request, 'admin pages/view_budget_details.html',context)
 
 def delete_budget(request,id):
