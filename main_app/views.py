@@ -6,13 +6,15 @@ from main_app.forms import SignUpForm
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-import re
+#import re
 import datetime
 from time import gmtime, strftime
 import csv
 import json
 from django.core import serializers
-
+import pytesseract
+from PIL import Image
+#from datefinder import find_dates
 
 
 def home(request):
@@ -86,7 +88,7 @@ def manage_budget(request,id):
 
     date=datetime.datetime.now()
 
-    if request.method=="POST":
+    if request.method=="POST" and 'form1' in request.POST:
         cost=Costs(
             date=date,
             purpose=request.POST["purpose"],
@@ -96,6 +98,31 @@ def manage_budget(request,id):
         cost.save()
         messages.success(request, "Successfully added")
         return redirect('manage_budget',id=id)
+    if request.method=="POST" and 'form2' in request.POST:
+        purpose=request.POST["purpose"]
+        memo=request.FILES['image']
+        img = Image.open(memo)
+        result = pytesseract.image_to_string(img)
+        #matches = list(datefinder.find_dates(result))
+
+        # if len(matches) > 0:
+        #
+        #     date = matches[0]
+        #     print(date)
+        # else:
+        #     print('No dates found')
+
+        ix = result.find('TOTAL')
+
+        # ix = ix + 6
+        # price = result[ix] + result[ix + 1] + result[ix + 2] + result[ix + 3]
+
+        return HttpResponse(result[ix])
+
+
+
+
+        #return HttpResponse(purpose)
     context={
         "total_budget":total_budget,
         "rem_budget":rem_budget,
