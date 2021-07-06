@@ -1,11 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Signup</title>
+  <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
 </head>
 <body>
-<h2>Sign up</h2>
+
+<div class="container">
+  <h2>Sign up</h2>
+  <div class="well">
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -22,5 +27,7 @@
     {% endfor %}
     <button type="submit">Sign up</button>
   </form>
+</div>
+</div>
 </body>
 </html>
