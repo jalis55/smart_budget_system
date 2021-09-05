@@ -113,7 +113,7 @@ def manage_budget(request,id):
 
         ix = result.find('TOTAL')
 
-        ix = ix + 6
+        ix = ix - 6
         cost = result[ix] + result[ix + 1] + result[ix + 2] + result[ix + 3]
         cost=Costs(
             date=def_date,
